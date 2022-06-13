@@ -1,9 +1,7 @@
 import sqlite3
-from os import getenv
-from dotenv import load_dotenv
-import getpass
-import os
-load_dotenv()
+
+from team_selection import *
+
 
 class Database:
     def __init__(self, database_name):
@@ -23,33 +21,63 @@ class Database:
         self.connection.commit()
 
     def delete(self, table, *values):
-        self.cursor.execute(f"delete from {table} WHERE Imię = ?", values)
+        self.cursor.execute(f"delete from {table} WHERE players = ?", values)
         self.connection.commit()
 
     def change_value(self, table, *values):
-        self.cursor.execute(f"UPDATE {table} SET skill = ? WHERE Imię = ?", values)
+        self.cursor.execute(f"UPDATE {table} SET skill = ? WHERE players = ?", values)
         self.connection.commit()
 
     def fetch_all(self, table, **conditions):
-        # SELECT * FROM url WHERE CATEGORY=?, category 
-        # SELECT * FROM ulr WHERE first_name=? AND last_name=?, first_name, last_name
         values = conditions.values()
         return self.cursor.execute(
             f"SELECT * FROM {table} WHERE ({' and '.join([f'{condition}=?' for condition in conditions])})",
             list(values)
         ) 
-
-def create_env():
-    user = (getpass.getuser())
-    filename = f'c:\\Users\\{user}\\Documents\\baza.db'
-    cwd = os.path.dirname(__file__) + '\\.env'
-    
-    try:
-        open(cwd, 'r')
         
-    except:
-        with open(cwd, 'w') as file:
-            write = f"DB_NAME='{filename}'"
-            file.write(write)
+    def check_player(self, table, *value):
+        self.cursor.execute(f"SELECT count(*) FROM {table} WHERE players == ?", value)
+        self.connection.commit()
+        return self.cursor.fetchone()[0]
 
-create_env()
+
+#   team selection
+def add_table():
+    # dodawanie tabeli do bazy danych 
+    db = Database(data_db)
+    db.create_table(f'''CREATE TABLE game 
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT, player TEXT, players TEXT, skill VAL)''')
+
+def add_data(players_nam, players_val):
+    #   dodawanie playerów (haredzak 5)
+    print("Dodaje nowe dane do bazy.")
+    zawodnik = 'player'
+    name = players_nam
+    skill = players_val
+    db = Database(data_db)
+    db.insert('game', None, zawodnik, name, skill)          
+
+                
+def del_data(name):
+    db = Database(data_db)
+    db.delete('game', name)
+
+def results(): 
+    # wyświetlanie Zawodników + Skill.
+    dane = 'player'
+    db = Database(data_db)
+    output = db.fetch_all('game', player=dane)
+
+    data = {}
+    for n, i in enumerate(output):
+        data[n+1] = [i[2], i[3]]
+    return data
+
+def search(name):
+    #   check player exist
+    db = Database(data_db)
+    result = db.check_player('game', name)
+    if result == 0:
+        return False
+    else:
+        return True
