@@ -13,7 +13,6 @@ def add_players(name):
         img_football = Image.open(r'src\football_field.png')
         players_outfit = Image.open(r'src\outfit.png')
         outfit_width ,outfit_height = 220, 150
-        field_width, field_height = img_football.size
         
         football_field = img_football.copy()
     

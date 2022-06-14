@@ -41,15 +41,12 @@ class Database:
         return self.cursor.fetchone()[0]
 
 
-#   team selection
 def add_table():
-    # dodawanie tabeli do bazy danych 
     db = Database(data_db)
     db.create_table(f'''CREATE TABLE game 
-                    (id INTEGER PRIMARY KEY AUTOINCREMENT, player TEXT, players TEXT, skill VAL)''')
+                    (id INTEGER PRIMARY KEY AUTOINCREMENT, player TEXT, players TEXT(10), skill VAL(9))''')
 
 def add_data(players_nam, players_val):
-    #   dodawanie playerów (haredzak 5)
     print("Dodaje nowe dane do bazy.")
     zawodnik = 'player'
     name = players_nam
@@ -63,7 +60,6 @@ def del_data(name):
     db.delete('game', name)
 
 def results(): 
-    # wyświetlanie Zawodników + Skill.
     dane = 'player'
     db = Database(data_db)
     output = db.fetch_all('game', player=dane)
@@ -74,7 +70,6 @@ def results():
     return data
 
 def search(name):
-    #   check player exist
     db = Database(data_db)
     result = db.check_player('game', name)
     if result == 0:

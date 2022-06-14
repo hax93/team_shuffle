@@ -1,3 +1,6 @@
 # folder ignores
 __pycache__/
 
+# files ignores
+*.db
+game_play.png

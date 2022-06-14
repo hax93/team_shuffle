@@ -2,11 +2,9 @@ import random
 
 
 def team_shuffle(names, numbers):
-    # creating an empty list
     i = 0
     number = True
     while number:
-
         temp = list(zip(numbers, names))
         random.shuffle(temp)
         skill, name = zip(*temp)

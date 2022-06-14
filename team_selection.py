@@ -14,9 +14,6 @@ user = getpass.getuser()
 data_db = r'src\team_select.db'
 team_image = r'src\game_play.png'
 
-#TODO: działa, trzeba w jakiś sposób dodać listę
-#TODO: zmienić warunki dodawania zawodników max 10znakow, value max 5 or 9
-
 class GuiSquads(ttk.Frame):
     players_play = []
     who_play_del = []
@@ -31,9 +28,7 @@ class GuiSquads(ttk.Frame):
     # Add reaction buttons, labels etc.
     def __init__(self, containter):
         super().__init__(containter)
-
         create_db()
-        #self.react_button()
         self.style = ttk.Style()
         self.style.configure("Treeview.Heading", font=(None, 13))
         self.style.configure('Treeview', rowheight=25)
@@ -120,7 +115,7 @@ class GuiSquads(ttk.Frame):
             GuiSquads.players_play.append(f'{i+1}')
 
         #   restart program
-        Button(self,text="Restart",command=self.restart_program).grid()
+        Button(self,text="Refresh",command=self.restart_program).grid()
     
     def threading(self, work):
         t1=threading.Thread(target=work, daemon=True)
@@ -148,7 +143,7 @@ class GuiSquads(ttk.Frame):
                 self.new_window = Toplevel(self)
                 nw_width, nw_height = 800, 800
                 
-                window_position(self.new_window, nw_width, nw_height, divisor=1)
+                window_position(self.new_window, nw_width, nw_height+70, divisor=1)
                 
                 self.image_team = PhotoImage(file=team_image)
                 Label(self.new_window, image=self.image_team).pack()
@@ -214,19 +209,30 @@ class GuiSquads(ttk.Frame):
         self.select_record()
                 
     def parse(self, event):
-        if search(self.add_players.get()) is False:
+        number = int(self.add_players_entry_val.get())
+        if len(self.add_players_entry.get()) >= 11:
+            window_msg(self, 'error', 'Name Max 10 letters!')
+        if number >= 10 or number <= 0:
+            window_msg(self, 'error', 'Value only 1-9!')
+        if (len(results()) + 1) > 12:
+            window_msg(self, 'error', 'Only 12 players can play!')
+        elif search(self.add_players.get()) is False:
             add_data(self.add_players.get(),self.add_players_val.get())
             self.add_players_entry.delete(0, END)
             self.add_players_entry_val.delete(0, END)
+            self.add_players_entry.focus()
+            self.result_players_dict()       
         else:
             window_msg(self, 'warning', 'Player exist.')
         
     def result_players_dict(self):
-        GuiSquads.list_players.clear()
         for k, v in results().items():
-            self.players_list.insert(parent='', index=k, iid=k, text='', 
-                                     values=(f"{k}", f"{v[0]}", f"{v[1]}")) 
-            GuiSquads.list_players[k] = [v[0], v[1]]
+            try:
+                self.players_list.insert(parent='', index=k, iid=k, text='', 
+                                        values=(f"{k}", f"{v[0]}", f"{v[1]}")) 
+                GuiSquads.list_players[k] = [v[0], v[1]]
+            except:              
+                GuiSquads.list_players[k] = [v[0], v[1]]
         GuiSquads.checkbox_numbers.append(len(results().items())) 
     
     def clear_entries(self):
@@ -259,7 +265,7 @@ class GuiSquads(ttk.Frame):
         db.change_value('game', self.add_players_entry_val.get(), 
                         self.add_players_entry.get())
         self.result_players_dict()
-        
+    
     
     def record_del(self):
         selected = self.players_list.focus()
@@ -269,6 +275,7 @@ class GuiSquads(ttk.Frame):
         x = self.players_list.selection()[0]
         self.players_list.delete(x)
         self.clear_entries()
+
         
 def create_db():
     try:
