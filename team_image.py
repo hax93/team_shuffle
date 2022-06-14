@@ -7,7 +7,7 @@ def add_players(name):
     coordinates_x = {0: 70, 1: 350, 2: 450, 3: 600, 'set': 100}
     coordinates_y = {0: 90, 1: 240, 2: 450, 3: 620}
     if len(name) < 2:
-        print("Nie możesz grać sam!")
+        pass
     else:
         fonts_folder = r'C:\Windows\Fonts'
         img_football = Image.open(r'src\football_field.png')
