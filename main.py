@@ -303,7 +303,7 @@ class App(tk.Tk):
     def __init__(self):
         super().__init__()
         
-        self.title('Team Selection')
+        self.title('Team Shuffle')
         
         mywidth = 350
         myheight = 550
