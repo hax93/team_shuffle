@@ -1,4 +1,4 @@
-import random
+from random import shuffle
 
 
 def team_shuffle(names, numbers):
@@ -6,7 +6,7 @@ def team_shuffle(names, numbers):
     number = True
     while number:
         temp = list(zip(numbers, names))
-        random.shuffle(temp)
+        shuffle(temp)
         skill, name = zip(*temp)
         length = len(skill)
         length2 = len(name)

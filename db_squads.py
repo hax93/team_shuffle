@@ -1,7 +1,6 @@
 import sqlite3
 
-from team_selection import *
-
+data_db = r'src\team_select.db'
 
 class Database:
     def __init__(self, database_name):
@@ -47,7 +46,6 @@ def add_table():
                     (id INTEGER PRIMARY KEY AUTOINCREMENT, player TEXT, players TEXT(10), skill VAL(9))''')
 
 def add_data(players_nam, players_val):
-    print("Dodaje nowe dane do bazy.")
     zawodnik = 'player'
     name = players_nam
     skill = players_val

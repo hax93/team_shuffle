@@ -1,8 +1,7 @@
-import getpass
-import os
-import sys
-import threading
 import tkinter as tk
+from os import execl
+from sys import argv, executable
+from threading import Thread
 from tkinter import *
 from tkinter import messagebox, ttk
 
@@ -10,7 +9,6 @@ from db_squads import *
 from team_image import add_players
 from team_shuffle import team_shuffle
 
-user = getpass.getuser()
 data_db = r'src\team_select.db'
 team_image = r'src\game_play.png'
 
@@ -118,7 +116,7 @@ class GuiSquads(ttk.Frame):
         Button(self,text="Refresh",command=self.restart_program).grid()
     
     def threading(self, work):
-        t1=threading.Thread(target=work, daemon=True)
+        t1 = Thread(target=work, daemon=True)
         t1.start() 
                  
     def football_field(self):
@@ -161,8 +159,8 @@ class GuiSquads(ttk.Frame):
             pass    
             
     def restart_program(self):
-         python = sys.executable
-         os.execl(python, python, * sys.argv)
+         python = executable
+         execl(python, python, * argv)
     
     def state(self):
         #   throw values that are marked 

@@ -1,4 +1,4 @@
-import os
+from os import path
 
 from PIL import Image, ImageDraw, ImageFont
 
@@ -16,7 +16,7 @@ def add_players(name):
         
         football_field = img_football.copy()
     
-        fonts = ImageFont.truetype(os.path.join(fonts_folder, 'arialbd.ttf'), 32)
+        fonts = ImageFont.truetype(path.join(fonts_folder, 'arialbd.ttf'), 32)
 
         x = coordinates_y.get(0)
         y = coordinates_y.get(0)
