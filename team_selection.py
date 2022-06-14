@@ -124,7 +124,7 @@ class GuiSquads(ttk.Frame):
     def football_field(self):
         players, values = [], []
         prepare = [x for x in self.check_marked().values()]
-        if GuiSquads.alerts < 2 and len(self.check_marked()) <= 4:
+        if GuiSquads.alerts <= 4 and len(self.check_marked()) <= 4:
             window_msg(self, 'info', 'Need 5 players for play game.')
             GuiSquads.alerts += 1
         elif GuiSquads.alerts >= 5 and GuiSquads.alerts < 10:
